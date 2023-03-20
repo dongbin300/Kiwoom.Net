@@ -23,7 +23,7 @@ namespace Kiwoom.Net.Example
         private void TestButton_Click(object sender, EventArgs e)
         {
             client.LoadStockItems(Enums.KiwoomMarket.코스닥);
-            client.주식틱차트조회("현우산업", Enums.KiwoomTickInterval.틱30, true);
+            client.주식기본정보("현우산업");
         }
     }
 }

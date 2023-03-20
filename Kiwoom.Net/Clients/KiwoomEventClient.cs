@@ -5,6 +5,7 @@ using Kiwoom.Net.Objects.Models;
 using Kiwoom.Net.Objects.Models.KiwoomModels;
 
 using System;
+using System.Reflection;
 
 namespace Kiwoom.Net.Clients
 {
@@ -45,57 +46,10 @@ namespace Kiwoom.Net.Clients
             var tr = e.sTrCode;
             var req = e.sRQName;
             var item = data.GetItemByCode(api.GetCommData(tr, req, 0, "종목코드").Trim());
-            switch (req)
-            {
-                case "OPT10079":
-                    var result10079 = (object[,])api.GetCommDataEx(tr, req);
-                    for (int i = 0; i < result10079.GetLength(0); i++)
-                    {
-                        item.Quotes.Add(new Quote
-                        {
-                            Time = result10079[i, 2].ToString().ToDateTime(),
-                            Open = int.Parse(result10079[i, 3].ToString()),
-                            High = int.Parse(result10079[i, 4].ToString()),
-                            Low = int.Parse(result10079[i, 5].ToString()),
-                            Close = int.Parse(result10079[i, 0].ToString()),
-                            Volume = int.Parse(result10079[i, 1].ToString())
-                        });
-                    }
-                    break;
-                case "OPT10080":
-                    var result10080 = (object[,])api.GetCommDataEx(tr, req);
-                    for (int i = 0; i < result10080.GetLength(0); i++)
-                    {
-                        item.Quotes.Add(new Quote
-                        {
-                            Time = result10080[i, 2].ToString().ToDateTime(),
-                            Open = int.Parse(result10080[i, 3].ToString().Substring(1)),
-                            High = int.Parse(result10080[i, 4].ToString().Substring(1)),
-                            Low = int.Parse(result10080[i, 5].ToString().Substring(1)),
-                            Close = int.Parse(result10080[i, 0].ToString().Substring(1)),
-                            Volume = int.Parse(result10080[i, 1].ToString())
-                        });
-                    }
-                    break;
-                case "OPT10081":
-                    var result10081 = (object[,])api.GetCommDataEx(tr, req);
-                    for (int i = 0; i < result10081.GetLength(0); i++)
-                    {
-                        item.Quotes.Add(new Quote
-                        {
-                            Time = result10081[i, 4].ToString().ToDate(),
-                            Open = int.Parse(result10081[i, 5].ToString()),
-                            High = int.Parse(result10081[i, 6].ToString()),
-                            Low = int.Parse(result10081[i, 7].ToString()),
-                            Close = int.Parse(result10081[i, 1].ToString()),
-                            Volume = int.Parse(result10081[i, 2].ToString())
-                        });
-                    }
-                    break;
 
-                default:
-                    break;
-            }
+            var receiveTr = new ReceiveTr(api, tr, req, item);
+
+            Type.GetType("Kiwoom.Net.Clients.KiwoomTrHandler").GetMethod(req, BindingFlags.Static | BindingFlags.Public).Invoke(null, new object[] { receiveTr });
 
             e.sRQName = e.sTrCode = "";
         }

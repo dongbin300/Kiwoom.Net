@@ -1,6 +1,7 @@
 ﻿using Kiwoom.Net.Enums;
 using Kiwoom.Net.Extensions;
 using Kiwoom.Net.Objects.Models;
+using Kiwoom.Net.Objects.Models.KiwoomModels;
 
 using System;
 using System.Text.RegularExpressions;
@@ -47,7 +48,7 @@ namespace Kiwoom.Net.Clients
         /// <returns></returns>
         private string GetItemCode(string itemId)
         {
-            return Regex.IsMatch(itemId, @"[0-9]{6}") ? itemId : Data.Items.Find(x => x.Name.Equals(itemId)).Code;
+            return Regex.IsMatch(itemId, @"[0-9]{6}") ? itemId : Data.Items.Find(x => x.종목명.Equals(itemId)).종목코드;
         }
 
         /// <summary>
@@ -88,11 +89,39 @@ namespace Kiwoom.Net.Clients
                 string name = Api.GetMasterCodeName(code);
                 Data.Items.Add(new StockItem
                 {
-                    Code = code,
-                    Name = name,
+                    종목코드 = code,
+                    종목명 = name,
                     Market = market
                 });
             }
+        }
+
+        /// <summary>
+        /// 로그인한 사용자 정보를 반환한다.
+        /// </summary>
+        /// <returns></returns>
+        public KiwoomUser GetLoginInfo()
+        {
+            return new KiwoomUser
+            {
+                AccountCount = int.Parse(Api.GetLoginInfo("ACCOUNT_CNT")),
+                AccountNumbers = Api.GetLoginInfo("ACCNO").SplitSemicolon(),
+                Id = Api.GetLoginInfo("USER_ID"),
+                Name = Api.GetLoginInfo("USER_NAME"),
+                IsKeyboardSecurity = Api.GetLoginInfo("KEY_BSECGB") == "0",
+                IsFirewall = Api.GetLoginInfo("FIREW_SECGB") == "1",
+            };
+        }
+
+        /// <summary>
+        /// OPT10001 - 주식기본정보
+        /// </summary>
+        /// <param name="itemId"></param>
+        public void 주식기본정보(string itemId)
+        {
+            var code = GetItemCode(itemId);
+            Api.SetInputValue("종목코드", code);
+            Api.CommRqData("OPT10001", screenNumber, "OPT10001", 0);
         }
 
         /// <summary>

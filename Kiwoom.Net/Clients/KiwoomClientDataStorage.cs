@@ -19,12 +19,12 @@ namespace Kiwoom.Net.Clients
 
         public StockItem GetItemByCode(string code)
         {
-            return Items.Find(x => x.Code.Equals(code));
+            return Items.Find(x => x.종목코드.Equals(code));
         }
 
         public StockItem GetItemByName(string name)
         {
-            return Items.Find(x => x.Name.Equals(name));
+            return Items.Find(x => x.종목명.Equals(name));
         }
     }
 }

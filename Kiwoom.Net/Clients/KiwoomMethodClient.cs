@@ -3,7 +3,6 @@
 using Kiwoom.Net.Enums;
 using Kiwoom.Net.Extensions;
 using Kiwoom.Net.Objects.Models;
-using Kiwoom.Net.Objects.Models.KiwoomModels;
 
 using System;
 using System.Collections.Generic;
@@ -50,20 +49,13 @@ namespace Kiwoom.Net.Clients
         }
 
         /// <summary>
-        /// 로그인한 사용자 정보를 반환한다.
+        /// 로그인 정보를 반환한다.
         /// </summary>
+        /// <param name="key"></param>
         /// <returns></returns>
-        public KiwoomUser GetLoginInfo()
+        public string GetLoginInfo(string key)
         {
-            return new KiwoomUser
-            {
-                AccountCount = int.Parse(api.GetLoginInfo("ACCOUNT_CNT")),
-                AccountNumbers = api.GetLoginInfo("ACCNO").SplitSemicolon(),
-                Id = api.GetLoginInfo("USER_ID"),
-                Name = api.GetLoginInfo("USER_NAME"),
-                IsKeyboardSecurity = api.GetLoginInfo("KEY_BSECGB") == "0",
-                IsFirewall = api.GetLoginInfo("FIREW_SECGB") == "1",
-            };
+            return api.GetLoginInfo(key);
         }
 
         /// <summary>
@@ -82,7 +74,7 @@ namespace Kiwoom.Net.Clients
         /// <returns></returns>
         public string SendOrder(string requestId, string screenNumber, string accountNumber, KiwoomOrderType orderType, StockItem item, int quantity, int price, KiwoomTransactionType transactionType, string originalOrderNumber = "")
         {
-            return api.SendOrder(requestId, screenNumber, accountNumber, (int)orderType, item.Code, quantity, price, transactionType.ToCode(), originalOrderNumber).ToErrorString();
+            return api.SendOrder(requestId, screenNumber, accountNumber, (int)orderType, item.종목코드, quantity, price, transactionType.ToCode(), originalOrderNumber).ToErrorString();
         }
 
         /// <summary>
@@ -110,7 +102,7 @@ namespace Kiwoom.Net.Clients
         /// <returns></returns>
         public string SendOrderCredit(string requestId, string screenNumber, string accountNumber, KiwoomOrderType orderType, StockItem item, int quantity, int price, KiwoomTransactionType transactionType, KiwoomCreditType creditType, DateTime loanDate, string originalOrderNumber = "")
         {
-            return api.SendOrderCredit(requestId, screenNumber, accountNumber, (int)orderType, item.Code, quantity, price, transactionType.ToCode(), creditType.ToCode(), loanDate.ToString("yyyyMMdd"), originalOrderNumber).ToErrorString();
+            return api.SendOrderCredit(requestId, screenNumber, accountNumber, (int)orderType, item.종목코드, quantity, price, transactionType.ToCode(), creditType.ToCode(), loanDate.ToString("yyyyMMdd"), originalOrderNumber).ToErrorString();
         }
 
         /// <summary>
@@ -292,7 +284,7 @@ namespace Kiwoom.Net.Clients
         /// <returns></returns>
         public string GetCommRealData(StockItem item, KiwoomFID id)
         {
-            return api.GetCommRealData(item.Code, (int)id);
+            return api.GetCommRealData(item.종목코드, (int)id);
         }
 
         /// <summary>

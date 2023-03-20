@@ -12,14 +12,14 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-<PackageId>Kiwoom.Net</PackageId>
-		<Version>1.0.0</Version>
-		<Authors>Gaten</Authors>
-		<Company>Erin Wave</Company>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<RepositoryUrl>https://github.com/dongbin300/Kiwoom.Net</RepositoryUrl>
-		<Description>키움증권 Open API Kiwoom Open API wrapper for .NET</Description>
-		<PackageIcon>kiwoom.png</PackageIcon>
+    <PackageId>Kiwoom.Net</PackageId>
+    <Version>1.1.1</Version>
+    <Authors>Gaten</Authors>
+    <Company>Erin Wave</Company>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/dongbin300/Kiwoom.Net</RepositoryUrl>
+    <Description>키움증권 Open API Kiwoom Open API wrapper for .NET</Description>
+    <PackageIcon>kiwoom.png</PackageIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,6 +57,7 @@
     <Compile Include="Clients\KiwoomClientDataStorage.cs" />
     <Compile Include="Clients\KiwoomEventClient.cs" />
     <Compile Include="Clients\KiwoomMethodClient.cs" />
+    <Compile Include="Clients\KiwoomTrHandler.cs" />
     <Compile Include="Enums\KiwoomCreditType.cs" />
     <Compile Include="Enums\KiwoomFID.cs" />
     <Compile Include="Enums\KiwoomInterval.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Objects\Models\KiwoomModels\KiwoomRealtimeData.cs" />
     <Compile Include="Objects\Models\KiwoomModels\KiwoomUser.cs" />
     <Compile Include="Objects\Models\Quote.cs" />
+    <Compile Include="Objects\Models\ReceiveTr.cs" />
     <Compile Include="Objects\Models\SfoBasisAsset.cs" />
     <Compile Include="Objects\Models\StockItem.cs" />
     <Compile Include="Objects\Models\ThemeItem.cs" />
